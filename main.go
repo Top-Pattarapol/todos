@@ -24,6 +24,9 @@ func main() {
 	path := "api/todos"
 	pathParam := "/:id"
 	e := echo.New()
+	e.GET("/", func(c echo.Context) error {
+		return c.String(http.StatusOK, "Hello, World!")
+	})
 	e.POST(path, postHandler)
 	e.GET(path, getHandler)
 	e.GET(path+pathParam, getIdHandler)
