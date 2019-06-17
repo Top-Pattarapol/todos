@@ -1,7 +1,9 @@
 package main
 
 import (
+	"fmt"
 	"net/http"
+	"os"
 	"strconv"
 
 	"github.com/labstack/echo"
@@ -23,6 +25,8 @@ var idCount = 0
 func main() {
 	path := "api/todos"
 	pathParam := "/:id"
+	port := getPort()
+	fmt.Println("Start at port:" + port)
 	e := echo.New()
 	e.GET("/", func(c echo.Context) error {
 		return c.String(http.StatusOK, "Hello, World!")
@@ -32,7 +36,7 @@ func main() {
 	e.GET(path+pathParam, getIdHandler)
 	e.PUT(path+pathParam, putHandler)
 	e.DELETE(path+pathParam, deleteHandler)
-	e.Logger.Fatal(e.Start(":80"))
+	e.Logger.Fatal(e.Start(port))
 }
 
 func postHandler(c echo.Context) error {
@@ -85,4 +89,13 @@ func deleteHandler(c echo.Context) error {
 	}
 	delete(todoList, id)
 	return c.JSON(http.StatusOK, Status{Status: "success"})
+}
+
+func getPort() string {
+	var port = os.Getenv("PORT") // ----> (A)
+	if port == "" {
+		port = "1234"
+		fmt.Println("No Port In Heroku" + port)
+	}
+	return ":" + port // ----> (B)
 }
