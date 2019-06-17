@@ -29,7 +29,7 @@ func main() {
 	e.GET(path+pathParam, getIdHandler)
 	e.PUT(path+pathParam, putHandler)
 	e.DELETE(path+pathParam, deleteHandler)
-	e.Logger.Fatal(e.Start(":1234"))
+	e.Logger.Fatal(e.Start())
 }
 
 func postHandler(c echo.Context) error {
